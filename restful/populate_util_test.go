@@ -103,6 +103,22 @@ func TestPopulateMessage(t *testing.T) {
 		},
 		{
 			msg:       &helloworld.HelloRequest{},
+			fieldPath: []string{"enum_value"},
+			values:    []string{"2147483648"},
+			want:      &helloworld.HelloRequest{},
+			wantErr:   true,
+			desc:      "populating message test parse enum field with value greater than int32 max",
+		},
+		{
+			msg:       &helloworld.HelloRequest{},
+			fieldPath: []string{"enum_value"},
+			values:    []string{"-2147483649"},
+			want:      &helloworld.HelloRequest{},
+			wantErr:   true,
+			desc:      "populating message test parse enum field with value less than int32 min",
+		},
+		{
+			msg:       &helloworld.HelloRequest{},
 			fieldPath: []string{"primitive_bool_value"},
 			values:    []string{"foo"},
 			want:      &helloworld.HelloRequest{},

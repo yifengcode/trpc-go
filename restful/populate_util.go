@@ -17,6 +17,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 	"time"
@@ -236,6 +237,9 @@ func parseEnumField(fd protoreflect.FieldDescriptor, value string) (protoreflect
 		i, err := strconv.Atoi(value)
 		if err != nil {
 			return protoreflect.Value{}, fmt.Errorf("%s is not a valid value", value)
+		}
+		if i < math.MinInt32 || i > math.MaxInt32 {
+			return protoreflect.Value{}, fmt.Errorf("enum number %d out of int32 bounds", i)
 		}
 		v = enum.Descriptor().Values().ByNumber(protoreflect.EnumNumber(i))
 		if v == nil {
